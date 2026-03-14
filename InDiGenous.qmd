@@ -20,661 +20,625 @@ execute:
 engine: knitr
 ---
 
+::: {.callout-note appearance="minimal"}
+*Course instructor: Yaron Denekamp, MD, MSc | Medical Informatics, School of Public Health, University of Haifa*
+:::
 
-
-
-
-
-
-
-
-
-
-***
-
-Presenter: Nikolai Danilov Medical Informatics course (lecturer: Yaron
-Denekamp, MD, MSc) 
-Master of Public Health programme School of Public Health University of Haifa, 2024 
-
-
-
-## Contents
-
-1.  Background and business requirement
-
-2.  Goals of the proposed medical information system
-
-3.  Current state analysis
-
-4.  Description of the proposed system (InDiGenous)
-
-5.  Stakeholders and users
-
-6.  Success metrics
-
-7.  Sources and appendices
-
-
+---
 
 ## I. Background and business requirement
 
 ### Background
 
-The integration of genetic information (or, most comprehensive,
-individual genomic data [GD]) into daily clinical practice has the
-potential to significantly enhance personalized healthcare by allowing
-physicians to tailor treatments based on an individual’s genetic
-profile. However, in current medical systems, GD is often kept separate
-from general medical records, limiting its accessibility and usefulness
-in day-to-day medical decision-making. This lack of integration hinders
-advancements in personalized medical care, slows down genetic research,
-and restricts the potential of GD in public health (PH) applications.
+The integration of individual genomic data (GD) into routine clinical practice has the potential to significantly enhance personalized healthcare — allowing physicians to tailor diagnostics and treatment to each patient's genetic profile. In current medical systems, however, GD is typically kept separate from general electronic health records (EHRs), limiting its practical utility at the point of care. This separation hinders personalized medicine, slows genomic research, and restricts the application of GD in public health (PH).
 
-GD plays a critical role not only in predicting disease risk but also in
-determining the effectiveness and safety of treatments based on
-individual genetic variations. The ability to use GD alongside other
-medical information could improve patient outcomes, particularly for
-complex conditions where genetics plays a significant role, such as
-certain cancers, cardiovascular diseases, and inherited disorders.
-However, there are several barriers to achieving this goal.
+Beyond disease risk prediction, GD determines the effectiveness and safety of many treatments — from oncological targeted therapy to pharmacogenomic drug dosing. Its integration with other medical data could substantially improve outcomes in conditions where genetics plays a central role: hereditary cancers, cardiovascular diseases, metabolic and neurological disorders, and others.
 
 ### Current challenges
 
-Several core challenges obstruct the effective use of GD in healthcare:
+Three core barriers obstruct effective GD utilization in healthcare:
 
--   Data fragmentation: Genetic information is often isolated within
-    specialized databases, disconnected from electronic health records
-    (EHRs). This fragmentation prevents healthcare providers from
-    accessing comprehensive patient data during consultations, hindering
-    the application of genetics in routine clinical decisions.
+- Data fragmentation: Genomic information is stored in specialized laboratory databases (DBs) disconnected from EHRs, preventing clinicians from accessing it during routine consultations.
 
--   Privacy concerns: GD contains highly sensitive information about
-    individuals and their families. Privacy and data security are
-    paramount, as unauthorized access or data breaches could lead to
-    stigmatization, discrimination, and other ethical concerns. These
-    risks create a reluctance among both patients and healthcare
-    providers to share or use GD without robust security and consent
-    mechanisms in place.
+- Privacy concerns: GD is uniquely sensitive — it carries implications not only for an individual but for her/his biological relatives across generations. The risks of unauthorized access, misuse, or discriminatory application create justified reluctance among patients and providers to share it without robust legal and technical safeguards.
 
--   Underutilization in PH: PH research often
-    lacks access to population-wide GD, limiting studies on genetic
-    epidemiology and the identification of PH interventions
-    targeted at genetic risk factors. Without a system for aggregating
-    and anonymizing this data, researchers miss crucial insights that
-    could shape PH policies and preventive care initiatives.
+- Underutilization in PH: Population-wide GD, essential for genetic epidemiology and the design of targeted preventive interventions, remains largely inaccessible to PH researchers due to the absence of aggregation and anonymization infrastructure.
 
 ### Business requirement
 
-**InDiGenous** is a proposed secure digital medical information
-repository system for individual genomic profiles, accessible by
-patients, healthcare providers, and other authorized persons. It aims to
-address these challenges by creating a centralized and secure repository
-for individual genomic profiles. Its core objectives are to:
+***InDiGenous*** (**Indi**vidual **Digi**tal **Geno**mic **S**ystem) is a proposed secure digital repository for individual genomic profiles (personalized genomic IDs), accessible by the patient, healthcare providers, and other authorized parties under strictly governed consent conditions.
 
--   Enhance patient autonomy: Provide patients with full control over
-    their GD, including who can access it and for what purpose. This
-    autonomy encourages individuals to participate in genetic research
-    and personalized healthcare with confidence in their privacy.
+Its **core objectives** are:
 
--   Facilitate personalized healthcare: Allow healthcare providers
-    access to GD that can inform personalized treatment plans,
-    optimizing care for each individual based on their unique genetic
-    makeup.
+- Patient autonomy: Full patient control over GD — who accesses it, for what purpose, and under what conditions.
 
--   Support PH research: Offer aggregated, anonymized data
-    for genetic research and population health studies. This feature
-    bridges the gap between clinical genetics and PH,
-    enabling studies that can reveal population-level trends and inform
-    preventive health strategies.
+- Personalized healthcare: Clinician access to GD within existing EHR workflows, enabling precision diagnostics and treatment.
 
-###InDiGenous' potential impact
+- PH research: Aggregated, anonymized GD for population-level genetic epidemiology and health policy.
 
-**InDiGenous** seeks to revolutionize the use of GD by bridging the
-clinical and PH spheres. Its impact includes:
+### InDiGenous' potential impact
 
--   Improved clinical outcomes: By integrating GD into patient care,
-    healthcare providers can deliver more precise treatment, reduce
-    adverse drug reactions, and improve health outcomes for genetic
-    diseases.
+***InDiGenous*** bridges the clinical and PH spheres of genomic medicine. Its anticipated impact spans three levels:
 
--   Population health insights: Aggregated GD offers insights into
-    genetic patterns across populations, supporting research that can
-    shape preventive health strategies and policy development.
+- Clinical: More precise treatment, reduced adverse drug reactions, improved outcomes in genetically driven conditions.
 
--   GD security and trust: Through strong privacy and consent
-    frameworks, **InDiGenous** aims to build trust among patients,
-    encouraging them to share their GD and participate in genomic and
-    other researches without fear of privacy violations.
+- Population: Insights into genetic risk patterns across communities, informing targeted preventive strategies.
 
-**InDiGenous** thus presents an innovative solution to the challenges
-faced in integrating GD within healthcare, benefiting patients,
-healthcare providers, and PH researchers alike.
-
-
+- Trust and security: A consent-driven, legally compliant framework that encourages patients to share GD without fear of misuse.
 
 ## II. Goals of the proposed medical information system
 
-###The system's objectives
+*InDiGenous* addresses critical gaps in healthcare by providing a centralized, secure platform for individual GD management. Its **primary goals** are as follows:
 
-**InDiGenous** aims to address critical gaps in healthcare by providing
-a centralized, secure platform for managing individual GD. This system
-envisions a future where GD is seamlessly integrated into healthcare,
-empowering patients, improving clinical outcomes, and advancing public
-health research.
+1. Empowerment of patient autonomy: To enable individuals to fully control their GD, including granting and managing access based on informed consent. Patients set access permissions for healthcare providers, researchers, and family members — with granular control over who may view, modify, or utilize specific data elements. This patient-centric architecture is the foundation of the system's trustworthiness and the prerequisite for broad adoption.
 
-The primary goals of **InDiGenous**, designed to establish a robust
-framework for accessible, secure, and impactful GD management, are as
-follows.
+2. Facilitation of personalized healthcare: To integrate GD into clinical practice, giving providers access to patient-specific genomic profiles at the point of care. GD enable more precise treatment recommendations — reducing adverse drug reactions, guiding targeted therapy selection, and informing dosing for patients whose genetic profiles affect drug metabolism. For conditions with strong genetic determinants (oncological, cardiovascular, neurological), this integration supports a shift from reactive to proactive, individualized care.
 
-1.  Empowerment of patient autonomy: To enable individuals to fully
-    control their GD, including granting and managing access based on
-    their informed consent.
+3. Support of PH and population-level research: To provide anonymized, aggregated GD supporting research in genomics, genetic epidemiology, and population genetics. Population-level GD allows identification of genetic risk factors prevalent in specific communities, enabling targeted preventive interventions. In the Israeli context — with its distinct population groups (Ashkenazi Jewish, Druze, Bedouin, and others) and elevated carrier frequencies of specific recessive disorders — this capability is of particular epidemiological relevance. The system supports studies linking genetic variants to disease outcomes at the population level, with direct implications for pharmacogenomics, preventive medicine, and health policy.
 
-    This goal is essential in respecting personal privacy and autonomy.
-    Patients can set access permissions for healthcare providers,
-    researchers, and even family members, allowing granular control over
-    who can view, modify, or utilize their data. This feature aims to
-    increase patients' confidence and willingness to participate in
-    genetic research and personalized care, with privacy as a top
-    priority.
+4. Data security and trust: To create a secure digital environment assuring GD privacy and integrity. *InDiGenous* implements encryption, multi-factor authentication, and detailed access logging for all GD interactions. Compliance with international data protection frameworks — including the European General Data Protection Regulation (GDPR) and the American Health Insurance Portability and Accountability Act (HIPAA) — as well as Israeli national privacy legislation, is built into the system architecture rather than treated as an afterthought.
 
-2.  Facilitation of personalized healthcare: To integrate GD into
-    clinical practice, allowing healthcare providers access to
-    patient-specific GD that can inform tailored treatment plans.
-
-    Access to GD enables providers to make more precise treatment
-    recommendations, minimizing adverse drug reactions and enhancing the
-    effectiveness of therapies. For instance, patients with certain
-    genetic profiles may metabolize medications differently, impacting
-    dosing and drug choice. **InDiGenous** can provide these insights at
-    the point of care, reducing trial and error in treatments and
-    leading to more efficient healthcare delivery. For genetic-driven
-    conditions like cancer or cardiovascular diseases, this tailored
-    approach could improve long-term outcomes, supporting a shift toward
-    proactive, personalized healthcare.
-
-3.  Support of PH and population-level research: To
-    provide anonymized, aggregated GD that can support research in
-    genomics and population genetics, offering insights that benefit
-    PH initiatives and inform policy. 
-    
-    By contributing to population-level data on genetic
-    trends, **InDiGenous** could help identify genetic risk factors
-    prevalent in certain communities or demographic groups, enabling
-    targeted health interventions and preventive measures. For example,
-    if certain populations are found to have a high prevalence of
-    genetic markers associated with cardiovascular risks, PH
-    campaigns can be tailored to address these specific needs. The system 
-    supports genetic epidemiology studies that investigate gene-disease 
-    associations at the population level, which are critical for understanding 
-    the heritability and prevalence of specific health conditions. This data 
-    could fuel advancements in fields such as pharmacogenomics, PH 
-    genomics, and preventive medicine.
-
-4.  Enhance GD security and trust in GD sharing: To create a secure 
-    digital environment that assures data privacy and
-    integrity, fostering trust among users and stakeholders. 
-    
-    **InDiGenous** implements stringent cybersecurity protocols, including 
-    encryption, multi-factor authentication, and controlled access logging, to 
-    prevent unauthorized access. By safeguarding patient data against breaches, 
-    it encourages a culture of trust, where individuals are more 
-    likely to share their individual clinical data for research and healthcare 
-    purposes. The system aligns with international data protection regulations, 
-    such as General Data Protection Regulation (GDPR), ensuring that all data 
-    handling practices respect ethical guidelines and legal standards. This 
-    commitment to compliance reinforces its credibility and reliability among 
-    users and healthcare institutions alike.
-
-5.  Fostering of collaboration between clinical and research communities: To 
-    facilitate collaboration between healthcare providers and researchers, 
-    leveraging GD for both patient care and scientific discovery. 
-    
-    **InDiGenous** is designed to seamlessly integrate with EHRs, state ID 
-    systems, and research databases, promoting information sharing across 
-    sectors. This interoperability allows clinicians and researchers to work 
-    with a unified GD source, enhancing both the quality of care and the 
-    depth of research. Researchers can access anonymized GD for clinical
-    trials, epidemiological studies, and PH investigations, driving 
-    discoveries that could improve treatment guidelines and inform future 
-    healthcare policies. 
-    
-Through these well-defined goals, **InDiGenous** positions itself as a 
-pioneering medical information system, designed to bridge clinical, personal, 
-and PH applications of GD. By prioritizing patient autonomy, GD 
-security, and collaboration, it provides a comprehensive framework for 
-addressing current healthcare challenges and creating new opportunities for 
-personalized medicine and PH.
-
-
+5. Fostering collaboration between clinical and research communities: To facilitate structured, governed data sharing between healthcare providers, researchers, and institutional users. *InDiGenous* is designed to integrate with EHRs, national ID infrastructure, and research DBs — enabling clinicians and researchers to work from a unified, authoritative GD source. Anonymized datasets are available for clinical trials, epidemiological studies, and PH investigations under defined access conditions.
 
 ## III. Current state analysis
 
 ### Existing gaps in GD utilization
 
-While GD offers valuable insights for personalized healthcare, its integration 
-within EHRs remains limited. Currently, GD is often stored in isolated 
-databases that lack interoperability with other medical information systems. 
-This data fragmentation presents a significant barrier to healthcare providers, 
-as it prevents them from accessing comprehensive patient information in real 
-time. As a result, the potential benefits of GD — such as precision in 
-diagnostics, treatment customization, and predictive healthcare — are 
-underutilized in both clinical and PH contexts.
+Despite the established clinical value of GD, its integration within EHR systems remains limited. GD are typically stored in isolated laboratory DBs lacking interoperability with other medical information systems. This fragmentation prevents clinicians from accessing GD in real time during consultations — precisely when it is most needed.
 
-Furthermore, the absence of standardized data-sharing protocols exacerbates the 
-disconnection between GD repositories and clinical systems. Without uniform 
-standards, healthcare providers may struggle to interpret and incorporate 
-GD, leading to inconsistent care and a missed opportunity for optimized, 
-patient-centered treatment plans.
+The absence of standardized data-sharing protocols compounds the problem. Without uniform exchange standards — such as HL7 FHIR (Fast Healthcare Interoperability Resources) or GA4GH (Global Alliance for Genomics and Health) frameworks — institutions cannot reliably communicate genomic findings across systems, leading to redundant testing, delays, and inconsistent care.
 
 ### Privacy concerns and ethical barriers
 
-Privacy concerns are among the most critical issues affecting the widespread 
-use of GD. GD is inherently sensitive, as it not only impacts the individual 
-but also carries implications for family members and communities. The potential 
-risks associated with unauthorized access, data breaches, or misuse are 
-substantial, and they contribute to a general hesitancy among patients and 
-healthcare providers to share GD for clinical or research purposes.
+GD is inherently different from other medical data. It is heritable (implicating biological relatives who have not consented to its collection) and permanent (unlike a password or an account number, a genome cannot be changed if compromised). These properties place GD in a distinct risk category that existing general-purpose privacy frameworks were not designed to address.
 
-The lack of robust security measures in current GD repositories further fuels 
-these concerns. Few systems meet the rigorous standards required for privacy in 
-genomic databases, such as encryption, consent-driven access controls, and GDPR 
-compliance. These limitations make patients wary of consenting to share their 
-GD, which in turn limits its availability for PH and clinical use.
+Current GD repositories rarely meet the standards required for this sensitivity: encryption at rest and in transit, consent-driven access controls, audit trails, and regulatory compliance. The result is justified patient reluctance to share GD, which in turn constrains both clinical use and research availability.
 
 ### Underutilization of GD in PH research
 
-In PH, GD has immense potential for informing population-level health 
-strategies, but its use is currently limited. PH research often lacks access to 
-comprehensive GD, which is crucial for identifying genetic trends across 
-populations and understanding the genetic basis of widespread health issues. 
-This underutilization in PH means that many opportunities for preventative care, 
-risk stratification, and early intervention are missed.
+Population-level GD is essential for identifying community-specific genetic risk factors, designing targeted screening programs, and advancing genetic epidemiology. Yet PH research systems generally lack access to it. The barrier is structural: no mechanism exists to aggregate and anonymize GD at scale while preserving individual privacy and maintaining research utility.
 
-One primary barrier is the absence of a system that can aggregate and anonymize 
-GD at a population level, which is essential for PH studies without infringing 
-on individual privacy. Without this, PH researchers are unable to analyze GD 
-alongside other epidemiological factors, reducing their capacity to develop 
-targeted interventions based on genetic risk profiles.
+This gap is particularly consequential in Israel, where distinct population groups carry elevated frequencies of specific genetic variants — information that is epidemiologically actionable but currently inaccessible in aggregated form.
 
-### Current systems and limitations
+### Current information systems and their limitations
 
-Some existing platforms provide partial solutions for GD storage and access, 
-but they fall short of a fully integrated approach. For example:
+Existing partial solutions each address one dimension of the problem while leaving the others unresolved:
 
-- Standalone genomic databases: These databases are specialized repositories 
-where GD is stored but often lack direct links to EHRs, leading to isolation 
-from other clinical data. This limitation hinders their practical use in 
-day-to-day clinical workflows.
+- Standalone genomic DBs (e.g., ClinVar, gnomAD): Specialized repositories for variant data, but without linkage to individual EHRs or clinical outcomes. Useful for research reference but not for point-of-care decision support.
 
-- EHR systems with limited GD integration: Although some EHRs incorporate GD, 
-the functionality is typically limited to certain conditions or use cases, and 
-comprehensive integration remains rare. Additionally, most EHRs lack the 
-infrastructure to manage complex consent and access requirements associated 
-with GD.
+- EHR systems with limited GD modules: Some modern EHRs incorporate basic pharmacogenomic alerts or discrete variant fields, but comprehensive genomic integration — covering the full range of genomic results — remains rare. Consent and access management for GD are typically absent.
 
-- PH surveillance systems: Current PH surveillance systems generally do not 
-include GD, as they are primarily focused on epidemiological and demographic 
-data. This gap reduces the scope of PH initiatives and hampers the development 
-of genetic-focused health interventions.
+- National biometric registries: Israeli biometric DB (operational since 2013) demonstrates that national-scale sensitive biometric data collection is technically and legally feasible. However, it is not linked to health data and has no genomic component.
 
-This analysis highlights the critical need for a comprehensive solution like 
-**InDiGenous**. By addressing these gaps, the system could offer a secure, 
-integrated platform that facilitates GD access for clinical and PH applications, 
-while ensuring privacy and fostering trust among users.
+- PH surveillance systems: Focused on epidemiological and demographic data; GD is not included. The Israel Precision Medicine Partnership (IPMP), launched in 2019 with a mandate to sequence 100,000 Israeli genomes, represents the most direct precursor to *InDiGenous* — but it remains a research initiative without a clinical integration or patient-access layer.
 
+The gap *InDiGenous* addresses is therefore not the absence of GD generation — that capacity exists — but the absence of a governed, integrated, patient-controlled infrastructure for its storage, access, and use across clinical, research, and extended application domains.
 
+## IV. Description of the project
 
-## IV. Description of the proposed system (InDiGenous)
+### Overview
 
-### Overview of InDiGenous
+***InDiGenous*** is a centralized, secure digital repository for individual genomic profiles — a personalized genomic ID system anchored to the national health/security infrastructure. Its architecture is built around three principles: 
 
-**InDiGenous** is designed as a comprehensive, secure digital repository for 
-managing individual GD. Its main objective is to integrate GD seamlessly into 
-healthcare and PH frameworks, enabling personalized healthcare while ensuring 
-robust data privacy. This chapter outlines the core structure, functionality, 
-and features of **InDiGenous**, highlighting its role in transforming GD 
-accessibility for patients, healthcare providers, and researchers.
+1) patient sovereignty over GD 
 
-### Core Functionality
+2) governed interoperability with existing clinical and research systems
 
-1. Centralized Storage and Secure Access
+3) extensibility to non-clinical application domains
 
-    - Data storage: **InDiGenous utilizes a centralized, secure database that 
-    consolidates genomic profiles alongside other relevant medical data. The 
-    system is structured to support a wide range of GD types, including DNA 
-    sequences, genetic markers, and information about heritable conditions.
-    
-    - Controlled access: Access to GD is highly regulated, with patients 
-    maintaining control over permissions. Through a user-friendly interface, 
-    individuals can grant or restrict access to healthcare providers, family 
-    members, and researchers as desired. Permissions are customizable, allowing 
-    users to specify who can view, modify, or utilize their GD.
-    
-    - Security measures: **InDiGenous** incorporates state-of-the-art 
-    cybersecurity protocols, including encryption, multi-factor authentication, 
-    and detailed access logs. Each access request is recorded, enabling 
-    patients and administrators to review and manage GD interactions, ensuring 
-    compliance with privacy regulations such as GDPR.
-    
-2. Cross-Platform Availability
+The system is not a genomic sequencing platform. It does not generate GD — it receives, stores, governs access to, and distributes GD produced by accredited clinical and research laboratories. Its role is infrastructural: to be the authoritative, persistent, patient-linked repository that GD currently lack.
 
-    - Web, mobile, and desktop versions: To maximize accessibility, 
-    **InDiGenous** is available on multiple platforms, allowing users to access 
-    their GD through web, mobile, and desktop applications. This flexibility 
-    accommodates a variety of user preferences and ensures GD accessibility in 
-    clinical, PH, and personal settings.
-    
-    - Seamless user experience: Each version of the platform features an 
-    intuitive interface, designed with user experience in mind. Access controls 
-    and data management tools are easy to navigate, encouraging widespread 
-    adoption among diverse user groups, from patients to healthcare 
-    professionals. 
-    
-    
-### Integration and Data Flow
+### Core functionality
 
-1. Integration with EHRs and national health system:
+1. Centralized storage and secure access:
 
-    - EHR compatibility: **InDiGenous** is designed to integrate smoothly with 
-    EHRs, enabling healthcare providers to view and utilize GD within their 
-    existing clinical workflows. This integration allows providers to pull 
-    relevant GD directly from the patient’s profile, facilitating real-time, 
-    personalized healthcare decisions without disrupting clinical processes.
-    
-    - National health system linkage: The platform also links with national 
-    health system, leveraging state ID infrastructure to verify identities and 
-    streamline access management. This connection enhances the system’s 
-    reliability and minimizes barriers to cross-institutional data sharing, 
-    fostering collaborative healthcare.
-    
-2. PH research integration:
+- *InDiGenous* consolidates genomic profiles alongside relevant clinical metadata in a structured, queryable DB. Supported data types include raw sequence data, interpreted variant reports, pharmacogenomic profiles, carrier status, hereditary disease risk assessments, and longitudinal updates as new variants are characterized.
 
-    - Aggregated GD for research: The system anonymizes and aggregates GD, 
-    providing PH researchers with access to population-wide GD while preserving 
-    privacy. This aggregated GD is essential for studies in genetic 
-    epidemiology and population genetics, offering insights that can drive PH 
-    strategies and interventions.
-    
-    - Real-time updates and data synchronization: **InDiGenous** updates 
-    patient GD in real-time, ensuring that both clinical and research data 
-    reflect the most recent information. This synchronization supports accuracy 
-    in clinical applications and robustness in GD used for PH research.
-    
-### User interface and access controls
+- Access is patient-controlled. Through the *InDiGenous* graphic user interface (GUI) an individual ("patient") grants or restricts access to specific data elements for specific recipients — clinicians, researchers, family members, or institutional users — with permissions revocable at any time. Every access event is logged in a tamper-evident audit trail visible to the patient.
+
+- Security architecture includes AES-256 encryption at rest and in transit, multi-factor authentication for all user tiers, role-based access control (RBAC), and periodic third-party security audits.
+
+2. Cross-platform availability:
+
+- *InDiGenous* is accessible via web, mobile, and desktop GUIs — designed for both technically proficient users and those with limited digital literacy. The patient-facing interface prioritizes clarity: consent decisions are presented in plain language, access logs are human-readable, and genomic findings are accompanied by lay summaries where clinically appropriate.
+
+### Integration and data flow
+
+```{r}
+#| label: setup 
+
+library(DiagrammeR)
+library(kableExtra)
+```
+
+The *@fig-info-flow* illustrates the core information flow within *InDiGenous*: how GD enter the system, how they are stored and governed, and how they reach authorized end users across clinical, research, and extended application domains.
+
+```{r}
+#| label: fig-info-flow
+#| fig-cap: Core information flow within InDiGenous
+
+mermaid("
+graph TD
+    A((Patient / Genome Source)) -->|Raw GD upload| B[InDiGenous Core Repository]
+    B --> C{Consent Engine}
+    C -->|Authorized| D[Clinical EHR Interface]
+    C -->|Authorized| E[Research and PH Module]
+    C -->|Authorized| F[Extended Use Module]
+    C -->|Denied / Revoked| G((Access Blocked))
+    D --> D1[Treating Physician]
+    D --> D2[Pharmacogenomics Alert System]
+    E --> E1[Anonymized Aggregate DB]
+    E1 --> E2[PH Researchers]
+    E1 --> E3[Genetic Epidemiology Studies]
+    F --> F1[Forensic Identification]
+    F --> F2[Reproductive Compatibility Screening]
+    F --> F3[National Security / Personnel ID]
+    B --> H[Audit Log]
+    H -->|Transparent to patient| A
+
+    style A fill:#2166ac,color:#ffffff,stroke:#2166ac
+    style G fill:#d73027,color:#ffffff,stroke:#d73027
+    style C fill:#f4a736,color:#000000,stroke:#e08010
+    style B fill:#1a9850,color:#ffffff,stroke:#1a9850
+    style H fill:#c2a5cf,color:#000000,stroke:#762a83
+    style D fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style E fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style F fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style D1 fill:#f7f7f7,color:#000000,stroke:#999999
+    style D2 fill:#f7f7f7,color:#000000,stroke:#999999
+    style E1 fill:#f7f7f7,color:#000000,stroke:#999999
+    style E2 fill:#f7f7f7,color:#000000,stroke:#999999
+    style E3 fill:#f7f7f7,color:#000000,stroke:#999999
+    style F1 fill:#f7f7f7,color:#000000,stroke:#999999
+    style F2 fill:#f7f7f7,color:#000000,stroke:#999999
+    style F3 fill:#f7f7f7,color:#000000,stroke:#999999
+")
+```
+
+1. EHR integration:
+
+*InDiGenous* communicates with existing EHR systems via HL7 FHIR APIs, enabling clinicians to retrieve relevant GD directly within their clinical workflow — without logging into a separate system. A pharmacogenomic alert layer flags drug-gene interactions at the point of prescribing, consistent with CPIC (Clinical Pharmacogenomics Implementation Consortium) guidelines.
+
+2. National health system linkage:
+
+Patient identity within *InDiGenous* is anchored to the Israeli national ID number, enabling linkage with HMO records (Clalit, Maccabi, Meuhedet, Leumit), the Ministry of Interior, and — under defined legal conditions — national security infrastructure. This linkage eliminates the identity verification burden that currently impedes cross-institutional data sharing.
+
+3. PH research integration:
+
+A dedicated research module provides PH researchers with access to anonymized aggregated GD under a data access agreement framework modeled on GA4GH standards. Individual-level data is never exposed; researchers interact with de-identified datasets or summary statistics generated server-side.
+
+### GUI and access control
+
+The *@fig-access-tiers* shows the tiered access architecture of *InDiGenous*, from the patient at the center to institutional users at the periphery.
+
+```{r}
+#| label: fig-access-tiers
+#| fig-cap: Tiered access architecture of InDiGenous 
+
+mermaid("
+graph LR
+    P((Patient GD Owner)) -->|Full control| CE{Consent Engine}
+    CE -->|Tier 1| T1[Treating Clinicians]
+    CE -->|Tier 2| T2[Researchers]
+    CE -->|Tier 3| T3[Family Members]
+    CE -->|Tier 4| T4[Forensic and Security]
+    CE -->|Tier 5| T5[IT Administrators]
+    CE -->|Denied| G((Access Blocked))
+
+    style P fill:#2166ac,color:#ffffff,stroke:#2166ac
+    style G fill:#d73027,color:#ffffff,stroke:#d73027
+    style CE fill:#f4a736,color:#000000,stroke:#e08010
+    style T1 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style T2 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style T3 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style T4 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style T5 fill:#f7f7f7,color:#000000,stroke:#999999
+")
+```
 
 1. Patient-centric design:
 
-    - User-friendly interface: The interface is tailored to both technically 
-    adept and novice users, with intuitive navigation that allows individuals 
-    to manage their GD easily. Patients can set access controls with a few 
-    clicks, selecting specific GD elements to share or withhold from authorized 
-    parties.
-    
-    - Consent-based access management: Access controls are built around 
-    informed consent, ensuring that each patient understands and approves how 
-    their GD will be used. Notifications and alerts provide transparency about 
-    who has accessed or modified GD, building trust in the system.
-    
-2. Healthcare provider access:
+The patient GUI presents GD access decisions in plain language. Consent is granular: e.g., a patient may authorize her/his treating oncologist to view tumor-relevant somatic variants while withholding pharmacogenomic data from the same clinician, or grant a researcher access to anonymized carrier status while blocking all clinical access. Notifications are issued for every access event.
 
-    - Streamlined clinical interface: Healthcare providers benefit from a 
-    clinical dashboard that displays essential GD relevant to their patients’ 
-    care. This dashboard allows providers to interpret GD within the context of 
-    the patient’s health history, with genetic insights accessible at the point 
-    of care.
-    
-    - Customizable GD views: Providers can customize their GD views to 
-    prioritize information most relevant to each patient’s condition, such as 
-    pharmacogenomic data for patients requiring personalized drug regimens.
-    
-3. Researcher access and anonymization:
+2. Clinical provider GUI:
 
-    - Anonymized data sets: Researchers receive access to anonymized, 
-    aggregated GD for studies, enabling them to analyze trends without 
-    compromising individual privacy. This process ensures that **InDiGenous** 
-    meets ethical standards for research data usage.
-    
-    
-    - Data export and integration: Researchers can export anonymized datasets 
-    for advanced analysis or integrate GD with research platforms, promoting 
-    collaboration and facilitating studies in genetic epidemiology and PH 
-    genomics.
-    
+Clinicians access a condition-relevant GD dashboard integrated within the EHR. Pharmacogenomic flags, hereditary risk alerts, and variant summaries are displayed contextually — presented at the moment of clinical relevance rather than requiring active retrieval.
+
+3. Research and institutional access:
+
+Researchers receive access to anonymized datasets exportable in standard formats (VCF, FHIR Genomics, CSV). Institutional users in forensic or security domains access the system under a separate legal authorization pathway, with independent audit logging and mandatory judicial or ministerial oversight.
+
 ### Comparison with existing systems
 
-**InDiGenous** stands apart from current GD storage solutions due to its 
-integrated approach, combining patient autonomy, privacy, and cross-platform 
-availability. Existing systems either lack sufficient interoperability with 
-EHRs, have limited GD handling capacity, or do not provide comprehensive 
-privacy controls. **InDiGenous** addresses these limitations by offering a 
-fully integrated system that prioritizes accessibility, privacy, and 
-cross-sector functionality, making it uniquely suited to modern healthcare 
-needs.
-
-
+| Feature | Standalone genomic DBs | EHR genomic modules | InDiGenous |
+|---|---|---|---|
+| Patient access and control | None | Limited | Full |
+| EHR integration | None | Partial | Complete (FHIR) |
+| Cross-institutional portability | None | Rare | By design |
+| PH research access | Reference only | None | Governed aggregate |
+| Extended use domains | None | None | Forensic, security, reproductive |
+| National ID linkage | None | None | Core feature |
+| Consent architecture | None | Basic | Granular, audited |
 
 ## V. Stakeholders and users
 
-The success of **InDiGenous** relies on engaging a range of stakeholders, each 
-with distinct roles and interests. By catering to their specific needs, the 
-system enhances healthcare, research, and data management processes across the 
-board. This section identifies the primary stakeholders and details how each 
-group benefits from and interacts with **InDiGenous**.
+The success of *InDiGenous* depends on engaging a clearly defined set of stakeholders, each with distinct roles, access levels, and interests. The *@tbl-stakeholders* summarizes the stakeholder ecosystem before each group is described in detail.
+
+```{r}
+#| label: tbl-stakeholders
+#| tbl-cap: "InDiGenous stakeholder groups: primary roles and benefits"
+
+stakeholders <- data.frame(
+  Group = c(
+    "Patients",
+    "Healthcare providers",
+    "PH researchers",
+    "IT developers / system administrators",
+    "State regulatory bodies",
+    "Research institutions and universities",
+    "Forensic and security agencies"
+  ),
+  `Primary role` = c(
+    "GD owners and consent controllers",
+    "Clinical GD consumers at point of care",
+    "Anonymized aggregate GD consumers",
+    "System builders, maintainers, security enforcers",
+    "Legal oversight, compliance monitoring",
+    "Research access, academic training",
+    "Legally authorized extended-use access"
+  ),
+  `Primary benefit` = c(
+    "Autonomy, personalized care, reproductive counseling",
+    "Precision treatment, pharmacogenomic safety, continuity of care",
+    "Population genetic epidemiology, PH policy development",
+    "Technically robust, compliant, trusted platform",
+    "Governed national GD infrastructure",
+    "High-quality anonymized GD for studies and teaching",
+    "Forensic identification, personnel ID, mass casualty response"
+  )
+)
+
+kable(stakeholders,
+      col.names = c("Stakeholder group", "Primary role", "Primary benefit")) |>
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = TRUE, font_size = 13) |>
+  column_spec(1, bold = TRUE, width = "12em")
+```
 
 ### 1. Patients
 
-Patients are the central stakeholders in **InDiGenous**, as they own and 
-control their GD. By managing access permissions, they decide who can view or 
-utilize their GD, enabling them to protect their privacy and autonomy.
+***Patients*** will be the central stakeholders — they will own their GD and control all access to them. This is not merely a design preference but a legal and ethical requirement, for ***GD*** are personal property with multigenerational implications.
 
-Benefits:
+- GD control and privacy: Patients will grant, restrict, and revoke access at any time, with full visibility of who has accessed their GD and when.
 
-    - GD control and privacy: Patients can share their GD on their terms, 
-    fostering trust in the system and encouraging greater participation in 
-    genetic research.
+- Personalized healthcare: GD integrated into the EHR will enable clinicians to deliver precision diagnostics and treatment without the patient needing to manage GD transfer between institutions.
 
-    - Enhanced healthcare: With GD integrated into their EHRs, patients benefit 
-    from personalized care, as providers can consider genetic insights for 
-    tailored treatment plans.
-
-    - Informed family planning: For patients with genetic special conditions, 
-    **InDiGenous** offers valuable insights for family planning, empowering 
-    individuals and couples to make well-informed reproductive choices.
+- Reproductive and family counseling: For patients with hereditary conditions or carrier status, *InDiGenous* will provide a structured basis for informed reproductive decision-making within existing genetic counseling frameworks.
 
 ### 2. Healthcare providers
 
-Healthcare providers, including family doctors and specialists, use 
-**InDiGenous** to access patient GD within clinical workflows, allowing them to 
-deliver personalized, precision medicine.
+Clinicians will access patient GD within their existing EHR workflow — no separate login, no manual retrieval. The system will surface relevant genomic findings contextually: pharmacogenomic alerts at the point of prescribing, hereditary risk flags during preventive consultations, tumor variant summaries in oncology.
 
-Benefits:
+- Precision treatment: Drug selection and dosing informed by pharmacogenomic profile, reducing adverse reactions.
 
-    - Improved decision-making: By accessing GD within EHRs, providers can 
-    tailor treatments to patients’ genetic profiles, minimizing adverse drug 
-    reactions and optimizing therapies for complex conditions like cancer or 
-    cardiovascular diseases.
-    
-    - Streamlined clinical workflows: The integration with EHRs ensures that 
-    providers can seamlessly incorporate GD into consultations without needing 
-    separate systems, which increases efficiency and reduces administrative 
-    burdens.
-    
-    - Continuity of medical care: **InDiGenous** facilitates cross-institutional 
-    data sharing, allowing healthcare providers to access patient GD across 
-    various medical facilities, supporting consistent and comprehensive care.
-    
+- Continuity of care: GD will be accessible across institutions, eliminating redundant testing when patients transfer.
+
+- Clinical decision support: Variant interpretation linked to current guidelines (CPIC, ACMG).
+
 ### 3. PH researchers
 
-PH researchers rely on anonymized, aggregated GD provided by **InDiGenous** to 
-analyze genetic trends and inform PH strategies. They focus on understanding 
-population-level genetic patterns that can influence disease prevention and 
-health policy.
+PH researchers will access anonymized, aggregated GD under a governed data access framework. Individual-level data will be never exposed. Researchers will interact with de-identified datasets or server-side summary statistics.
 
-Benefits:
+- Genetic epidemiology: Population-level GD will enable identification of community-specific risk factors — of particular relevance in Israeli population subgroups.
 
-    - Data for epidemiological studies: By accessing aggregated GD, PH 
-    researchers can identify genetic risk factors prevalent in specific 
-    populations, which is essential for developing targeted interventions.
-    
-    - Anonymized and ethical research: InDiGenous ensures GD privacy by 
-    providing researchers with anonymized datasets, aligning with ethical 
-    standards and increasing public trust in PH studies.
-    
-    - Improved public health policies: Insights from population-level GD enable 
-    researchers to shape preventive measures and health policies, addressing 
-    genetic risk factors in communities effectively.
-    
-### 4. IT Developers and system administrators
+- Policy development: Evidence base for targeted screening programs and preventive interventions.
 
-IT developers and system administrators maintain and secure **InDiGenous** 
-platform, ensuring system integrity, data security, and compliance with 
-regulatory standards like GDPR.
+- Ethical compliance: GA4GH-aligned data access agreements will ensure that research use remains within consented boundaries.
 
-Benefits:
+### 4. IT developers and system administrators
 
-    - Enhanced GD security: IT teams manage security protocols, including 
-    encryption, access logging, and multi-factor authentication, safeguarding 
-    GD against unauthorized access and data breaches.
-    
-    - System reliability: By continuously monitoring and updating the platform, 
-    developers ensure smooth operation across web, mobile, and desktop 
-    applications, enhancing user satisfaction and adoption rates.
+This group will build and maintain the platform — ensuring security, reliability, and regulatory compliance. They will have system-level access only; no GD content wiil be accessible to them.
 
-    - Compliance and trust: Ensuring that **InDiGenous** complies with 
-    international data protection regulations strengthens trust among patients, 
-    healthcare providers, and researchers, fostering widespread use.
+- Security architecture: Encryption, access logging, penetration testing, incident response.
+
+- System reliability: Uptime, performance, cross-platform consistency.
+
+- Compliance: Ongoing alignment with GDPR, HIPAA, Israeli Privacy Protection Law, and evolving GD governance standards.
 
 ### 5. State regulatory bodies
 
-These bodies oversee the legal and ethical standards for managing and utilizing 
-GD within **InDiGenous**. Their role includes monitoring compliance and 
-establishing policies that guide the system's use in healthcare and research.
+The Ministry of Health, the Privacy Protection Authority, and relevant oversight bodies will define the legal framework within which *InDiGenous* operates — approving data access policies, auditing compliance, and updating governance as the regulatory landscape evolves.
 
-Benefits:
+- Data protection: Ensuring national and international privacy standards are met.
 
-    - Data protection assurance: Regulatory bodies ensure that **InDiGenous** 
-    adheres to national and international privacy standards, protecting 
-    citizens’ rights.
-    
-    - Support for PH initiatives: Government health agencies can leverage 
-    aggregated GD from **InDiGenous** for PH planning, identifying genetic risk 
-    patterns in populations and developing preventive health strategies.
-    
-    - Quality Control: Regulatory oversight ensures that **InDiGenous** 
-    maintains high-quality data management standards, reducing risks of misuse 
-    and promoting ethical, responsible use of GD in healthcare.
-    
+- PH planning: Leveraging aggregated GD insights for national health strategy.
+
+- Quality control: Independent audit of data management practices.
+
 ### 6. Research institutions and universities
 
-Research institutions and universities may use **InDiGenous** as a data source 
-for advancing scientific knowledge in genomics, genetic epidemiology, and 
-personalized medicine.
+Academic institutions will access anonymized GD for studies in genomics, genetic epidemiology, personalized medicine, etc. *InDiGenous* will also serve as a teaching resource — exposing students to real-world GD infrastructure within an ethical, governed framework.
 
-Benefits:
+### 7. Forensic and security agencies
 
-    - Access to high-quality GD: Academic researchers gain access to anonymized 
-    GD, enabling them to conduct high-quality studies on gene-disease 
-    associations, genetic risk factors, and treatment efficacy.
-    
-    - Collaboration opportunities: **InDiGenous** fosters collaboration across 
-    institutions, enabling interdisciplinary research that can drive 
-    breakthroughs in clinical and PH areas.
-    
-    - Educational resource: For academic programs, **InDiGenous** serves as a 
-    valuable teaching resource, exposing students to practical applications of 
-    genomics in Clinical Medicine and PH.
-    
-By catering to these diverse stakeholders, **InDiGenous** establishes a 
-well-rounded ecosystem where GD is used to its full potential. Each stakeholder 
-benefits from and contributes to the system's success, creating a collaborative, 
-secure, and effective environment for advancing personalized healthcare and 
-PH research.
+This stakeholder group is absent from conventional genomic ID proposals but is directly relevant in the Israeli context. The National Forensic Institute (Abu Kabir), Israeli Police, IDF Medical Corps, and relevant security services will be able to access *InDiGenous* under a separate legal authorization pathway — distinct from the clinical and research tiers — with mandatory judicial or ministerial oversight and independent audit logging.
 
+- Forensic identification: Identification in mass casualty events and criminal investigations.
 
+- Personnel ID: Identity verification for military and security personnel in field conditions.
+
+Access in this tier will never be self-authorized by the patient consent engine alone — it will require external legal authorization, logged separately, and subject to independent oversight.
 
 ## VI. Success metrics
 
-To evaluate the effectiveness and impact of **InDiGenous** in transforming GD 
-management for personalized healthcare and PH research, several key metrics are 
-established. These metrics are designed to provide quantitative and qualitative 
-feedback on user adoption, data security, research utility, and overall system 
-effectiveness. By tracking these indicators, stakeholders can measure progress, 
-identify areas for improvement, and ensure that the system achieves its goals.
+The effectiveness of *InDiGenous* will be evaluated across six domains. For each, the metric, its rationale, and its measurement method are defined (*@tbl-metrics*).
 
-***1. User adoption and engagement:*** The number of patients, healthcare 
-providers, and researchers actively using **InDiGenous**.
+```{r}
+#| label: tbl-metrics
+#| tbl-cap: "InDiGenous success metrics by domain"
 
-    High user adoption rates indicate trust in the system and satisfaction with 
-    its functionality. Adoption rates among patients suggest acceptance of GD management, while high engagement from healthcare providers and researchers demonstrates the system’s 
-    value in clinical and research settings.
-    
-    User registration and activity logs are monitored to track engagement. Additionally, user feedback surveys assess satisfaction and usability, helping to refine **InDiGenous** and ensure it meets users' needs.
-    
-***2. Data security and privacy compliance:*** Number of data breaches, 
-unauthorized access attempts, and compliance with privacy regulations (e.g., GDPR).
+metrics <- data.frame(
+  Domain = c(
+    "User adoption and engagement",
+    "Data security and privacy compliance",
+    "Research impact and utilization",
+    "Patient outcomes and clinical improvements",
+    "Reproductive and family planning use",
+    "PH contributions"
+  ),
+  Metric = c(
+    "Number of active patients, providers, and researchers registered",
+    "Number of data breaches, unauthorized access attempts; regulatory compliance rate",
+    "Number of studies and publications using InDiGenous data; dataset access requests",
+    "Reduction in adverse drug reactions; improvement in treatment efficacy indicators",
+    "Usage rate of GD for reproductive counseling; satisfaction with genetic counseling",
+    "Number of PH studies using aggregated GD; policies informed by InDiGenous data"
+  ),
+  Target = c(
+    "Steady growth; high retention rates across all user tiers",
+    "Zero breaches; full compliance with GDPR, HIPAA, and Israeli Privacy Protection Law",
+    "Increasing citation and dataset access over time",
+    "Measurable reduction in preventable adverse events linked to pharmacogenomics",
+    "High satisfaction scores; increasing uptake in genetic counseling workflows",
+    "Demonstrable policy impact at Ministry of Health level"
+  )
+)
 
-    Zero or nearly zero incidents of unauthorized data access or breaches 
-    indicate robust security and garantee users' trust.
-    
-    Regular security audits and monitoring of access logs provide insights into 
-    the system’s resilience against cyber threats. Compliance assessments with 
-    data protection laws confirm that **InDiGenous** adheres to the highest 
-    standards of data privacy.
-    
-***3. Research impact and utilization:*** The number of research studies and publications using data provided by **InDiGenous**, as well as the number of anonymized datasets accessed by 
-researchers.
+kable(metrics,
+      col.names = c("Domain", "Metric", "Target")) |>
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = TRUE, font_size = 13) |>
+  column_spec(1, bold = TRUE, width = "12em") |>
+  column_spec(2, width = "22em") |>
+  column_spec(3, width = "18em")
+```
 
-    Increased utilization of GD for scientific research demonstrates the 
-    system’s contribution to advancing genomic and epidemiological knowledge. 
-    Studies supported by **InDiGenous**-kept GD indicate the platform’s 
-    relevance in academic and PH research contexts.
-    
-    Records of dataset requests, mentions of **InDiGenous** in published 
-    research, and partnerships with research institutions provide measurable 
-    evidence of the system’s impact on scientific advancement. 
-    
-***4. Patient outcomes and clinical improvements:*** Improvements in patient outcomes, as measured by reduced adverse drug reactions, enhanced treatment efficacy, and adherence to personalized care plans.
+### 1. User adoption and engagement
 
-    The integration of GD in clinical decision-making should result in better 
-    medical outcomes, particularly for complex conditions with genetic 
-    components. Tracking clinical outcomes provides evidence of the system’s 
-    effectiveness in enabling personalized healthcare.
-    
-    Healthcare providers report on treatment success rates, patient feedback, 
-    and health improvements linked to genetic insights accessed through 
-    **InDiGenous**. This GD helps assess the platform’s real-world impact on 
-    patient care.
-    
-***5. Family planning and informed decision-making:*** Usage rates of GD for 
-family planning decisions and reported satisfaction with genetic counseling.
+High *InDiGenous* adoption rates will reflect trust in the system and satisfaction with its functionality. Patient adoption will indicate acceptance of the genomic ID concept; provider engagement will demonstrate clinical utility; researcher uptake will confirm the value of the governed data access framework. User registration logs, activity monitoring, and periodic satisfaction surveys will provide the measurement basis.
 
-    Supporting patients in making informed reproductive decisions based on GD 
-    reflects the system’s value in empowering patient autonomy. High 
-    satisfaction rates indicate that **InDiGenous** provides useful insights 
-    for individuals or couples with genetic concerns.
-    
-    Patient surveys and family planning reports assess how often GD insights 
-    influence reproductive decisions. Qualitative feedback helps understand 
-    user experiences and guides improvements in genetic counseling resources. 
-    
-***6. PH contributions:*** The number of PH studies utilizing aggregated GD and 
-the resulting policies or preventive measures informed by this research.
+### 2. Data security and privacy compliance
 
-    Aggregated GD from **InDiGenous** should support PH efforts to understand 
-    genetic risk factors in communities, leading to targeted health 
-    interventions and policy development.
-    
-    PH agencies track the use of **InDiGenous** data in epidemiological studies, 
-    health campaigns, and policy documents. Metrics include the scope and reach 
-    of PH initiatives informed by GD insights, reflecting the system’s role in 
-    promoting community health. 
-    
-Through these well-defined metrics, **InDiGenous** establishes a measurable 
-framework for assessing its effectiveness and impact. Tracking these indicators 
-allows stakeholders to evaluate progress, ensure data security, and confirm the 
-system’s contributions to personalized healthcare and PH research.
+Zero or near-zero security incidents are the baseline expectation, not an aspirational target — given the sensitivity of GD. Regular independent security audits, real-time access log monitoring, and formal compliance assessments against GDPR, HIPAA, and Israeli Privacy Protection Law will provide ongoing verification.
 
+### 3. Research impact and utilization
+
+Growing research *InDiGenous* utilization will demonstrates the system's contribution to genomic and epidemiological science. Dataset request logs, publication tracking, and institutional partnership records will provide measurable evidence of research impact.
+
+### 4. Patient outcomes and clinical improvements
+
+These metrics will require linkage between *InDiGenous* access events and clinical outcome data — a function that the EHR integration layer makes technically feasible. Healthcare providers will report on treatment success rates and adverse event frequencies in GD-informed versus non-informed care episodes.
+
+### 5. Reproductive and family planning use
+
+This metric is particularly relevant in the Israeli context, where carrier screening for founder-population-specific recessive disorders is culturally and clinically established. Patient surveys and genetic counseling service records will provide the measurement basis.
+
+### 6. PH contributions
+
+PH agencies will track dataset use in epidemiological studies, health campaigns, and policy documents. The ultimate indicator is demonstrable policy impact — screening program design, population health intervention targeting, or national health strategy informed by *InDiGenous*-derived evidence.
+
+## VII. Legal and ethical framework
+
+GD occupy a unique position in privacy law. Unlike most personal data, GD are:
+
+- Simultaneously individual and familial — a person's genome implicates biological relatives who have never consented to GD collection. 
+
+- Permanent — a compromised genome, unlike a compromised password, cannot be changed. 
+
+- Predictive — they reveal future health probabilities that carry implications for insurance, employment, and personal relationships. 
+
+These properties demand a legal and ethical framework specifically designed for GD, not merely an extension of general personal data protection.
+
+### Applicable legal frameworks
+
+*InDiGenous* will operate at the intersection of three regulatory domains:
+
+1. International frameworks:
+
+- ***GDPR (EU General Data Protection Regulation, 2016):*** Classifies ***GD*** as a special category requiring explicit consent, data minimization, and the right to erasure. While Israeli law is not directly subject to GDPR, alignment with it is strategically important for international research collaboration and data sharing.
+
+- ***HIPAA (US Health Insurance Portability and Accountability Act, 1996):*** Establishes standards for protected health information, including GD, in the US context. Relevant for collaborations with American research institutions and for benchmarking security standards.
+
+- ***GA4GH (Global Alliance for Genomics and Health) Framework for Responsible Sharing of Genomic and Health-Related Data:*** The de facto international standard for governed GD sharing in research contexts. *InDiGenous* will adopt GA4GH principles for its research access tier.
+
+2. Israeli national framework:
+
+- ***Privacy Protection Law (1981) and Privacy Protection Regulations (Information Security, 2017):*** Israel's primary personal data protection legislation. Establishes data subject rights, controller obligations, and security requirements. Predates the genomic era and does not address heritable data specifically — a legislative gap that *InDiGenous* must navigate through internal governance until dedicated genomic privacy legislation is enacted.
+
+- ***Patient Rights Law (1996):*** Establishes informed consent as the basis for all medical data use. The consent architecture of *InDiGenous* is built on this foundation.
+
+- ***National Biometric Database Law (2009, amended 2017):*** Establishes the legal precedent for national-scale sensitive biometric data collection and governance in Israel — the closest existing model for the InDiGenous national ID layer.
+
+- ***Genetic Information Law (2000):*** Prohibits genetic discrimination in employment and insurance and regulates genetic testing consent. Directly applicable to *InDiGenous* and its clinical use tier.
+
+### Consent architecture
+
+The consent model of *InDiGenous* is: 
+
+- Dynamic: Consent can be granted, modified, or revoked at any time. Revocation will trigger immediate access suspension and — where technically feasible — deletion of previously shared data copies.
+
+- Granular: Consent will be given for specific data elements, specific recipients, and specific purposes — not as a single blanket authorization.
+
+- Audited: Every consent decision and every access event will be logged in a tamper-evident audit trail accessible to the patient.
+
+The *@fig-consent-lifecycle* illustrates the consent lifecycle within *InDiGenous*.
+
+```{r}
+#| label: fig-consent-lifecycle
+#| fig-cap: Consent lifecycle within InDiGenous
+
+mermaid("graph TD
+    A((Patient)) -->|Initiates| B[Consent Registration]
+    B --> C{Consent Decision}
+    C -->|Grant| D[Access Authorized]
+    C -->|Deny| E[Access Blocked]
+    D --> F[Access Event Logged]
+    F --> G[Audit Trail]
+    G -->|Visible to patient| A
+    A -->|Modifies| H[Consent Update]
+    H --> C
+    A -->|Revokes| I[Consent Revocation]
+    I --> J[Access Suspended]
+    J --> G
+
+    style A fill:#2166ac,color:#ffffff,stroke:#2166ac
+    style C fill:#f4a736,color:#000000,stroke:#e08010
+    style E fill:#d73027,color:#ffffff,stroke:#d73027
+    style J fill:#d73027,color:#ffffff,stroke:#d73027
+    style G fill:#c2a5cf,color:#000000,stroke:#762a83
+    style B fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style D fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style F fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style H fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style I fill:#e8f4f8,color:#000000,stroke:#4393c3
+")
+```
+
+### Surveillance risk mitigation
+
+The inclusion of forensic and national security access tiers in *InDiGenous* raises legitimate concerns about the potential for genomic surveillance — the use of a health data system as an instrument of population monitoring or targeted identification beyond its stated purpose.
+
+These concerns are addressed through structural separation rather than policy alone:
+
+- Separate legal authorization pathway: Forensic and security tier access will require external judicial or ministerial authorization, independent of the patient consent engine. The system cannot be self-authorized by any internal user for extended-use access.
+
+- Independent audit logging: Extended-use access events will be logged in a separate audit system, monitored by an independent oversight body rather than the system operator.
+
+- Purpose limitation: Access requests must specify the legal basis, the specific data elements requested, and the authorized purpose. Bulk or speculative access will be technically prevented by the access control architecture.
+
+- Parliamentary oversight: The legal framework governing extended-use access will be subject to Knesset oversight, ensuring democratic accountability for the security tier.
+
+These safeguards reflect a core design principle: ***InDiGenous*** is a health data system with governed extended-use capabilities — not a surveillance system with a health data layer. The distinction is architectural, not merely rhetorical.
+
+### The legislative gap
+
+Israel currently lacks dedicated GD governance legislation. The *InDiGenous* proposal implicitly calls for its enactment — a law that addresses heritable data sensitivity, multigenerational consent implications, the right to genomic non-disclosure, and the specific governance requirements of a national genomic ID system. Until such legislation exists, *InDiGenous* will operate under the existing Privacy Protection Law framework, supplemented by internal governance policies aligned with GDPR and GA4GH standards.
+
+Engagement with the Ministry of Justice, the Ministry of Health, and the Privacy Protection Authority in the development of that legislation is a prerequisite for *InDiGenous* implementation at national scale.
+
+## VIII. Implementation roadmap
+
+***InDiGenous*** is not conceived as a single deployment but as a phased national infrastructure project. Each phase builds on the previous, expanding scope while managing technical, legal, and adoption risks incrementally.
+
+The *@fig-roadmap* and *@tbl-roadmap* present the three-phase roadmap as a sequential process with defined milestones.
+
+```{r}
+#| label: fig-roadmap
+#| fig-cap: InDiGenous implementation roadmap  
+
+mermaid("graph LR
+    A[Phase 1 - Foundation] --> B[Phase 2 - Integration]
+    B --> C[Phase 3 - Expansion]
+    A --> A1[Pilot repository at Carmel MC]
+    A --> A2[Legal framework development]
+    A --> A3[Core consent engine]
+    B --> B1[EHR integration via HL7 FHIR]
+    B --> B2[HMO linkage - Clalit, Maccabi, etc.]
+    B --> B3[PH research module]
+    C --> C1[National ID linkage]
+    C --> C2[Forensic and security tier]
+    C --> C3[International research access]
+
+    style A fill:#1a9850,color:#ffffff,stroke:#1a9850
+    style B fill:#2166ac,color:#ffffff,stroke:#2166ac
+    style C fill:#762a83,color:#ffffff,stroke:#762a83
+    style A1 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style A2 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style A3 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style B1 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style B2 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style B3 fill:#e8f4f8,color:#000000,stroke:#4393c3
+    style C1 fill:#f7f7f7,color:#000000,stroke:#999999
+    style C2 fill:#f7f7f7,color:#000000,stroke:#999999
+    style C3 fill:#f7f7f7,color:#000000,stroke:#999999
+")
+```
+
+```{r}
+#| label: tbl-roadmap
+#| tbl-cap: "InDiGenous implementation roadmap across three phases"
+
+roadmap <- data.frame(
+  Deliverable = c(
+    "Technical",
+    "Legal and governance",
+    "Success criteria"
+  ),
+  Phase1 = c(
+    "Core repository; consent interface (HE/AR/EN); pharmacogenomic alert module at Carmel MC pilot; HL7 FHIR / VCF / GA4GH DRS alignment.",
+    "Engagement with Ministry of Justice and Privacy Protection Authority; internal governance policy (GDPR / GA4GH aligned); ethics committee approval; data access agreement templates.",
+    "Pilot repository operational; zero security incidents; legislative engagement formally initiated."
+  ),
+  Phase2 = c(
+    "FHIR API integration with all four HMOs; pharmacogenomic alerts active across HMO workflows; PH research module operational; cross-institutional GD portability.",
+    "Dedicated GD governance law enacted or in advanced legislative process; data access agreements with ≥ 3 academic institutions; independent security audit published.",
+    "Active users across all HMOs; ≥ 1 published PH study using InDiGenous data; measurable reduction in pharmacogenomic adverse events."
+  ),
+  Phase3 = c(
+    "National ID linkage via Ministry of Interior registry; forensic and security tier under judicial authorization; international research access (GA4GH Passport); 50-year archiving infrastructure.",
+    "GD governance law fully operational; parliamentary oversight of extended-use tier; bilateral agreements with international genomic consortia.",
+    "National HMO and hospital coverage; forensic tier operational with documented legal framework; GA4GH-compliant national GD infrastructure recognized."
+  )
+)
+
+kable(roadmap,
+      col.names = c("", "Phase 1: Foundation (Years 1–2)", "Phase 2: Integration (Years 3–5)", "Phase 3: Expansion (Years 6–10)"),
+      align = c("l","l","l","l")) |>
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = TRUE, font_size = 13) |>
+  column_spec(1, bold = TRUE, width = "10em") |>
+  column_spec(2, width = "20em") |>
+  column_spec(3, width = "20em") |>
+  column_spec(4, width = "20em")
+```
+
+1. Foundation (years 1–2): The first phase will establish the technical and legal core of *InDiGenous* at pilot scale, without national deployment.
+
+2. Integration (years 3–5): The second phase will scale *InDiGenous* from pilot to regional deployment, with full EHR integration and activation of the PH research module.
+
+3. Expansion (years 6–10): The third phase will achieve national scale and activate the extended-use tiers — national ID linkage, forensic and security access, and international research collaboration.
+
+The phased approach serves double purpose beyond risk management: it generates evidence at each stage that justifies the next and builds the institutional trust — among patients, clinicians, researchers, and regulators — that a national genomic ID system requires before it can function at scale.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
 
 
 ### VII. Sources and appendices

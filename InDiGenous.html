@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Nik Danilov">
+<meta name="dcterms.date" content="2025-01-01">
+
+<title>InDiGenous: A Personalized Genomic ID System</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="InDiGenous_files/libs/clipboard/clipboard.min.js"></script>
+<script src="InDiGenous_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="InDiGenous_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="InDiGenous_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="InDiGenous_files/libs/quarto-html/popper.min.js"></script>
+<script src="InDiGenous_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="InDiGenous_files/libs/quarto-html/anchor.min.js"></script>
+<link href="InDiGenous_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="InDiGenous_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="InDiGenous_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="InDiGenous_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="InDiGenous_files/libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="InDiGenous_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="InDiGenous_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="InDiGenous_files/libs/d3-3.3.8/d3.min.js"></script>
+
+<script src="InDiGenous_files/libs/dagre-0.4.0/dagre-d3.min.js"></script>
+
+<link href="InDiGenous_files/libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet">
+
+<script src="InDiGenous_files/libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+
+<link href="InDiGenous_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+
+<script src="InDiGenous_files/libs/chromatography-0.1/chromatography.js"></script>
+
+<script src="InDiGenous_files/libs/DiagrammeR-binding-1.0.11/DiagrammeR.js"></script>
+
+<script src="InDiGenous_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="InDiGenous_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#i.-background-and-business-requirement" id="toc-i.-background-and-business-requirement" class="nav-link active" data-scroll-target="#i.-background-and-business-requirement">I. Background and business requirement</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#current-challenges" id="toc-current-challenges" class="nav-link" data-scroll-target="#current-challenges">Current challenges</a></li>
+  <li><a href="#business-requirement" id="toc-business-requirement" class="nav-link" data-scroll-target="#business-requirement">Business requirement</a></li>
+  <li><a href="#indigenous-potential-impact" id="toc-indigenous-potential-impact" class="nav-link" data-scroll-target="#indigenous-potential-impact">InDiGenous’ potential impact</a></li>
+  </ul></li>
+  <li><a href="#ii.-goals-of-the-proposed-medical-information-system" id="toc-ii.-goals-of-the-proposed-medical-information-system" class="nav-link" data-scroll-target="#ii.-goals-of-the-proposed-medical-information-system">II. Goals of the proposed medical information system</a></li>
+  <li><a href="#iii.-current-state-analysis" id="toc-iii.-current-state-analysis" class="nav-link" data-scroll-target="#iii.-current-state-analysis">III. Current state analysis</a>
+  <ul class="collapse">
+  <li><a href="#existing-gaps-in-gd-utilization" id="toc-existing-gaps-in-gd-utilization" class="nav-link" data-scroll-target="#existing-gaps-in-gd-utilization">Existing gaps in GD utilization</a></li>
+  <li><a href="#privacy-concerns-and-ethical-barriers" id="toc-privacy-concerns-and-ethical-barriers" class="nav-link" data-scroll-target="#privacy-concerns-and-ethical-barriers">Privacy concerns and ethical barriers</a></li>
+  <li><a href="#underutilization-of-gd-in-ph-research" id="toc-underutilization-of-gd-in-ph-research" class="nav-link" data-scroll-target="#underutilization-of-gd-in-ph-research">Underutilization of GD in PH research</a></li>
+  <li><a href="#current-information-systems-and-their-limitations" id="toc-current-information-systems-and-their-limitations" class="nav-link" data-scroll-target="#current-information-systems-and-their-limitations">Current information systems and their limitations</a></li>
+  </ul></li>
+  <li><a href="#iv.-description-of-the-project" id="toc-iv.-description-of-the-project" class="nav-link" data-scroll-target="#iv.-description-of-the-project">IV. Description of the project</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#core-functionality" id="toc-core-functionality" class="nav-link" data-scroll-target="#core-functionality">Core functionality</a></li>
+  <li><a href="#integration-and-data-flow" id="toc-integration-and-data-flow" class="nav-link" data-scroll-target="#integration-and-data-flow">Integration and data flow</a></li>
+  <li><a href="#gui-and-access-control" id="toc-gui-and-access-control" class="nav-link" data-scroll-target="#gui-and-access-control">GUI and access control</a></li>
+  <li><a href="#comparison-with-existing-systems" id="toc-comparison-with-existing-systems" class="nav-link" data-scroll-target="#comparison-with-existing-systems">Comparison with existing systems</a></li>
+  </ul></li>
+  <li><a href="#v.-stakeholders-and-users" id="toc-v.-stakeholders-and-users" class="nav-link" data-scroll-target="#v.-stakeholders-and-users">V. Stakeholders and users</a>
+  <ul class="collapse">
+  <li><a href="#patients" id="toc-patients" class="nav-link" data-scroll-target="#patients">1. Patients</a></li>
+  <li><a href="#healthcare-providers" id="toc-healthcare-providers" class="nav-link" data-scroll-target="#healthcare-providers">2. Healthcare providers</a></li>
+  <li><a href="#ph-researchers" id="toc-ph-researchers" class="nav-link" data-scroll-target="#ph-researchers">3. PH researchers</a></li>
+  <li><a href="#it-developers-and-system-administrators" id="toc-it-developers-and-system-administrators" class="nav-link" data-scroll-target="#it-developers-and-system-administrators">4. IT developers and system administrators</a></li>
+  <li><a href="#state-regulatory-bodies" id="toc-state-regulatory-bodies" class="nav-link" data-scroll-target="#state-regulatory-bodies">5. State regulatory bodies</a></li>
+  <li><a href="#research-institutions-and-universities" id="toc-research-institutions-and-universities" class="nav-link" data-scroll-target="#research-institutions-and-universities">6. Research institutions and universities</a></li>
+  <li><a href="#forensic-and-security-agencies" id="toc-forensic-and-security-agencies" class="nav-link" data-scroll-target="#forensic-and-security-agencies">7. Forensic and security agencies</a></li>
+  </ul></li>
+  <li><a href="#vi.-success-metrics" id="toc-vi.-success-metrics" class="nav-link" data-scroll-target="#vi.-success-metrics">VI. Success metrics</a>
+  <ul class="collapse">
+  <li><a href="#vii.-sources-and-appendices" id="toc-vii.-sources-and-appendices" class="nav-link" data-scroll-target="#vii.-sources-and-appendices">VII. Sources and appendices</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">InDiGenous: A Personalized Genomic ID System</h1>
+<p class="subtitle lead">A Biomedical Informatics System Design Proposal</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Nik Danilov <a href="mailto:danilov.md@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            School of Public Health, University of Haifa | Lady Davis Carmel Medical Center, Haifa, Israel
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><em>Course instructor: Yaron Denekamp, MD, MSc | Medical Informatics, School of Public Health, University of Haifa</em></p>
+</div>
+</div>
+</div>
+<hr>
+<section id="i.-background-and-business-requirement" class="level2">
+<h2 class="anchored" data-anchor-id="i.-background-and-business-requirement">I. Background and business requirement</h2>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>The integration of individual genomic data (GD) into routine clinical practice has the potential to significantly enhance personalized healthcare — allowing physicians to tailor diagnostics and treatment to each patient’s genetic profile. In current medical systems, however, GD is typically kept separate from general electronic health records (EHRs), limiting its practical utility at the point of care. This separation hinders personalized medicine, slows genomic research, and restricts the application of GD in public health (PH).</p>
+<p>Beyond disease risk prediction, GD determines the effectiveness and safety of many treatments — from oncological targeted therapy to pharmacogenomic drug dosing. Its integration with other medical data could substantially improve outcomes in conditions where genetics plays a central role: hereditary cancers, cardiovascular diseases, metabolic and neurological disorders, and others.</p>
+</section>
+<section id="current-challenges" class="level3">
+<h3 class="anchored" data-anchor-id="current-challenges">Current challenges</h3>
+<p>Three core barriers obstruct effective GD utilization in healthcare:</p>
+<ul>
+<li><p>Data fragmentation: Genomic information is stored in specialized laboratory databases (DBs) disconnected from EHRs, preventing clinicians from accessing it during routine consultations.</p></li>
+<li><p>Privacy concerns: GD is uniquely sensitive — it carries implications not only for an individual but for her/his biological relatives across generations. The risks of unauthorized access, misuse, or discriminatory application create justified reluctance among patients and providers to share it without robust legal and technical safeguards.</p></li>
+<li><p>Underutilization in PH: Population-wide GD, essential for genetic epidemiology and the design of targeted preventive interventions, remains largely inaccessible to PH researchers due to the absence of aggregation and anonymization infrastructure.</p></li>
+</ul>
+</section>
+<section id="business-requirement" class="level3">
+<h3 class="anchored" data-anchor-id="business-requirement">Business requirement</h3>
+<p><strong><em>InDiGenous</em></strong> (<strong>Indi</strong>vidual <strong>Digi</strong>tal <strong>Geno</strong>mic <strong>S</strong>ystem) is a proposed secure digital repository for individual genomic profiles (personalized genomic IDs), accessible by the patient, healthcare providers, and other authorized parties under strictly governed consent conditions.</p>
+<p>Its <strong>core objectives</strong> are:</p>
+<ul>
+<li><p>Patient autonomy: Full patient control over GD — who accesses it, for what purpose, and under what conditions.</p></li>
+<li><p>Personalized healthcare: Clinician access to GD within existing EHR workflows, enabling precision diagnostics and treatment.</p></li>
+<li><p>PH research: Aggregated, anonymized GD for population-level genetic epidemiology and health policy.</p></li>
+</ul>
+</section>
+<section id="indigenous-potential-impact" class="level3">
+<h3 class="anchored" data-anchor-id="indigenous-potential-impact">InDiGenous’ potential impact</h3>
+<p><strong><em>InDiGenous</em></strong> bridges the clinical and PH spheres of genomic medicine. Its anticipated impact spans three levels:</p>
+<ul>
+<li><p>Clinical: More precise treatment, reduced adverse drug reactions, improved outcomes in genetically driven conditions.</p></li>
+<li><p>Population: Insights into genetic risk patterns across communities, informing targeted preventive strategies.</p></li>
+<li><p>Trust and security: A consent-driven, legally compliant framework that encourages patients to share GD without fear of misuse.</p></li>
+</ul>
+</section>
+</section>
+<section id="ii.-goals-of-the-proposed-medical-information-system" class="level2">
+<h2 class="anchored" data-anchor-id="ii.-goals-of-the-proposed-medical-information-system">II. Goals of the proposed medical information system</h2>
+<p><em>InDiGenous</em> addresses critical gaps in healthcare by providing a centralized, secure platform for individual GD management. Its <strong>primary goals</strong> are as follows:</p>
+<ol type="1">
+<li><p>Empowerment of patient autonomy: To enable individuals to fully control their GD, including granting and managing access based on informed consent. Patients set access permissions for healthcare providers, researchers, and family members — with granular control over who may view, modify, or utilize specific data elements. This patient-centric architecture is the foundation of the system’s trustworthiness and the prerequisite for broad adoption.</p></li>
+<li><p>Facilitation of personalized healthcare: To integrate GD into clinical practice, giving providers access to patient-specific genomic profiles at the point of care. GD enable more precise treatment recommendations — reducing adverse drug reactions, guiding targeted therapy selection, and informing dosing for patients whose genetic profiles affect drug metabolism. For conditions with strong genetic determinants (oncological, cardiovascular, neurological), this integration supports a shift from reactive to proactive, individualized care.</p></li>
+<li><p>Support of PH and population-level research: To provide anonymized, aggregated GD supporting research in genomics, genetic epidemiology, and population genetics. Population-level GD allows identification of genetic risk factors prevalent in specific communities, enabling targeted preventive interventions. In the Israeli context — with its distinct population groups (Ashkenazi Jewish, Druze, Bedouin, and others) and elevated carrier frequencies of specific recessive disorders — this capability is of particular epidemiological relevance. The system supports studies linking genetic variants to disease outcomes at the population level, with direct implications for pharmacogenomics, preventive medicine, and health policy.</p></li>
+<li><p>Data security and trust: To create a secure digital environment assuring GD privacy and integrity. <em>InDiGenous</em> implements encryption, multi-factor authentication, and detailed access logging for all GD interactions. Compliance with international data protection frameworks — including the European General Data Protection Regulation (GDPR) and the American Health Insurance Portability and Accountability Act (HIPAA) — as well as Israeli national privacy legislation, is built into the system architecture rather than treated as an afterthought.</p></li>
+<li><p>Fostering collaboration between clinical and research communities: To facilitate structured, governed data sharing between healthcare providers, researchers, and institutional users. <em>InDiGenous</em> is designed to integrate with EHRs, national ID infrastructure, and research DBs — enabling clinicians and researchers to work from a unified, authoritative GD source. Anonymized datasets are available for clinical trials, epidemiological studies, and PH investigations under defined access conditions.</p></li>
+</ol>
+</section>
+<section id="iii.-current-state-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="iii.-current-state-analysis">III. Current state analysis</h2>
+<section id="existing-gaps-in-gd-utilization" class="level3">
+<h3 class="anchored" data-anchor-id="existing-gaps-in-gd-utilization">Existing gaps in GD utilization</h3>
+<p>Despite the established clinical value of GD, its integration within EHR systems remains limited. GD are typically stored in isolated laboratory DBs lacking interoperability with other medical information systems. This fragmentation prevents clinicians from accessing GD in real time during consultations — precisely when it is most needed.</p>
+<p>The absence of standardized data-sharing protocols compounds the problem. Without uniform exchange standards — such as HL7 FHIR (Fast Healthcare Interoperability Resources) or GA4GH (Global Alliance for Genomics and Health) frameworks — institutions cannot reliably communicate genomic findings across systems, leading to redundant testing, delays, and inconsistent care.</p>
+</section>
+<section id="privacy-concerns-and-ethical-barriers" class="level3">
+<h3 class="anchored" data-anchor-id="privacy-concerns-and-ethical-barriers">Privacy concerns and ethical barriers</h3>
+<p>GD is inherently different from other medical data. It is heritable (implicating biological relatives who have not consented to its collection) and permanent (unlike a password or an account number, a genome cannot be changed if compromised). These properties place GD in a distinct risk category that existing general-purpose privacy frameworks were not designed to address.</p>
+<p>Current GD repositories rarely meet the standards required for this sensitivity: encryption at rest and in transit, consent-driven access controls, audit trails, and regulatory compliance. The result is justified patient reluctance to share GD, which in turn constrains both clinical use and research availability.</p>
+</section>
+<section id="underutilization-of-gd-in-ph-research" class="level3">
+<h3 class="anchored" data-anchor-id="underutilization-of-gd-in-ph-research">Underutilization of GD in PH research</h3>
+<p>Population-level GD is essential for identifying community-specific genetic risk factors, designing targeted screening programs, and advancing genetic epidemiology. Yet PH research systems generally lack access to it. The barrier is structural: no mechanism exists to aggregate and anonymize GD at scale while preserving individual privacy and maintaining research utility.</p>
+<p>This gap is particularly consequential in Israel, where distinct population groups carry elevated frequencies of specific genetic variants — information that is epidemiologically actionable but currently inaccessible in aggregated form.</p>
+</section>
+<section id="current-information-systems-and-their-limitations" class="level3">
+<h3 class="anchored" data-anchor-id="current-information-systems-and-their-limitations">Current information systems and their limitations</h3>
+<p>Existing partial solutions each address one dimension of the problem while leaving the others unresolved:</p>
+<ul>
+<li><p>Standalone genomic DBs (e.g., ClinVar, gnomAD): Specialized repositories for variant data, but without linkage to individual EHRs or clinical outcomes. Useful for research reference but not for point-of-care decision support.</p></li>
+<li><p>EHR systems with limited GD modules: Some modern EHRs incorporate basic pharmacogenomic alerts or discrete variant fields, but comprehensive genomic integration — covering the full range of genomic results — remains rare. Consent and access management for GD are typically absent.</p></li>
+<li><p>National biometric registries: Israeli biometric DB (operational since 2013) demonstrates that national-scale sensitive biometric data collection is technically and legally feasible. However, it is not linked to health data and has no genomic component.</p></li>
+<li><p>PH surveillance systems: Focused on epidemiological and demographic data; GD is not included. The Israel Precision Medicine Partnership (IPMP), launched in 2019 with a mandate to sequence 100,000 Israeli genomes, represents the most direct precursor to <em>InDiGenous</em> — but it remains a research initiative without a clinical integration or patient-access layer.</p></li>
+</ul>
+<p>The gap <em>InDiGenous</em> addresses is therefore not the absence of GD generation — that capacity exists — but the absence of a governed, integrated, patient-controlled infrastructure for its storage, access, and use across clinical, research, and extended application domains.</p>
+</section>
+</section>
+<section id="iv.-description-of-the-project" class="level2">
+<h2 class="anchored" data-anchor-id="iv.-description-of-the-project">IV. Description of the project</h2>
+<section id="overview" class="level3">
+<h3 class="anchored" data-anchor-id="overview">Overview</h3>
+<p><strong><em>InDiGenous</em></strong> is a centralized, secure digital repository for individual genomic profiles — a personalized genomic ID system anchored to the national health/security infrastructure. Its architecture is built around three principles:</p>
+<ol type="1">
+<li><p>patient sovereignty over GD</p></li>
+<li><p>governed interoperability with existing clinical and research systems</p></li>
+<li><p>extensibility to non-clinical application domains</p></li>
+</ol>
+<p>The system is not a genomic sequencing platform. It does not generate GD — it receives, stores, governs access to, and distributes GD produced by accredited clinical and research laboratories. Its role is infrastructural: to be the authoritative, persistent, patient-linked repository that GD currently lack.</p>
+</section>
+<section id="core-functionality" class="level3">
+<h3 class="anchored" data-anchor-id="core-functionality">Core functionality</h3>
+<ol type="1">
+<li>Centralized storage and secure access:</li>
+</ol>
+<ul>
+<li><p><em>InDiGenous</em> consolidates genomic profiles alongside relevant clinical metadata in a structured, queryable DB. Supported data types include raw sequence data, interpreted variant reports, pharmacogenomic profiles, carrier status, hereditary disease risk assessments, and longitudinal updates as new variants are characterized.</p></li>
+<li><p>Access is patient-controlled. Through the <em>InDiGenous</em> graphic user interface (GUI) an individual (“patient”) grants or restricts access to specific data elements for specific recipients — clinicians, researchers, family members, or institutional users — with permissions revocable at any time. Every access event is logged in a tamper-evident audit trail visible to the patient.</p></li>
+<li><p>Security architecture includes AES-256 encryption at rest and in transit, multi-factor authentication for all user tiers, role-based access control (RBAC), and periodic third-party security audits.</p></li>
+</ul>
+<ol start="2" type="1">
+<li>Cross-platform availability:</li>
+</ol>
+<ul>
+<li><em>InDiGenous</em> is accessible via web, mobile, and desktop GUIs — designed for both technically proficient users and those with limited digital literacy. The patient-facing interface prioritizes clarity: consent decisions are presented in plain language, access logs are human-readable, and genomic findings are accompanied by lay summaries where clinically appropriate.</li>
+</ul>
+</section>
+<section id="integration-and-data-flow" class="level3">
+<h3 class="anchored" data-anchor-id="integration-and-data-flow">Integration and data flow</h3>
+<p>The diagram below illustrates the core information flow within <em>InDiGenous</em>: how GD enters the system, how it is stored and governed, and how it reaches authorized end users across clinical, research, and extended application domains.</p>
+<div class="cell">
+<div id="fig-info-flow" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-info-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-a8d4092d788e0fcdb567" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-a8d4092d788e0fcdb567">{"x":{"diagram":"\ngraph TD\n    A((Patient / Genome Source)) -->|Raw GD upload| B[InDiGenous Core Repository]\n    B --> C{Consent Engine}\n    C -->|Authorized| D[Clinical EHR Interface]\n    C -->|Authorized| E[Research and PH Module]\n    C -->|Authorized| F[Extended Use Module]\n    C -->|Denied / Revoked| G((Access Blocked))\n    D --> D1[Treating Physician]\n    D --> D2[Pharmacogenomics Alert System]\n    E --> E1[Anonymized Aggregate DB]\n    E1 --> E2[PH Researchers]\n    E1 --> E3[Genetic Epidemiology Studies]\n    F --> F1[Forensic Identification]\n    F --> F2[Reproductive Compatibility Screening]\n    F --> F3[National Security / Personnel ID]\n    B --> H[Audit Log]\n    H -->|Transparent to patient| A\n\n    style A fill:#2166ac,color:#ffffff,stroke:#2166ac\n    style G fill:#d73027,color:#ffffff,stroke:#d73027\n    style C fill:#f4a736,color:#000000,stroke:#e08010\n    style B fill:#1a9850,color:#ffffff,stroke:#1a9850\n    style H fill:#c2a5cf,color:#000000,stroke:#762a83\n    style D fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style E fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style F fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style D1 fill:#f7f7f7,color:#000000,stroke:#999999\n    style D2 fill:#f7f7f7,color:#000000,stroke:#999999\n    style E1 fill:#f7f7f7,color:#000000,stroke:#999999\n    style E2 fill:#f7f7f7,color:#000000,stroke:#999999\n    style E3 fill:#f7f7f7,color:#000000,stroke:#999999\n    style F1 fill:#f7f7f7,color:#000000,stroke:#999999\n    style F2 fill:#f7f7f7,color:#000000,stroke:#999999\n    style F3 fill:#f7f7f7,color:#000000,stroke:#999999\n"},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-info-flow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+<ol type="1">
+<li>EHR integration:</li>
+</ol>
+<p><em>InDiGenous</em> communicates with existing EHR systems via HL7 FHIR APIs, enabling clinicians to retrieve relevant GD directly within their clinical workflow — without logging into a separate system. A pharmacogenomic alert layer flags drug-gene interactions at the point of prescribing, consistent with CPIC (Clinical Pharmacogenomics Implementation Consortium) guidelines.</p>
+<ol start="2" type="1">
+<li>National health system linkage:</li>
+</ol>
+<p>Patient identity within <em>InDiGenous</em> is anchored to the Israeli national ID number, enabling linkage with HMO records (Clalit, Maccabi, Meuhedet, Leumit), the Ministry of Interior, and — under defined legal conditions — national security infrastructure. This linkage eliminates the identity verification burden that currently impedes cross-institutional data sharing.</p>
+<ol start="3" type="1">
+<li>PH research integration:</li>
+</ol>
+<p>A dedicated research module provides PH researchers with access to anonymized aggregated GD under a data access agreement framework modeled on GA4GH standards. Individual-level data is never exposed; researchers interact with de-identified datasets or summary statistics generated server-side.</p>
+</section>
+<section id="gui-and-access-control" class="level3">
+<h3 class="anchored" data-anchor-id="gui-and-access-control">GUI and access control</h3>
+<p>The diagram below shows the tiered access architecture of <em>InDiGenous</em>, from the patient at the center to institutional users at the periphery.</p>
+<div class="cell">
+<div id="fig-access-tiers" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-access-tiers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="DiagrammeR html-widget html-fill-item" id="htmlwidget-451ce45254d4917033c0" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-451ce45254d4917033c0">{"x":{"diagram":"\ngraph LR\n    P((Patient GD Owner)) -->|Full control| CE{Consent Engine}\n    CE -->|Tier 1| T1[Treating Clinicians]\n    CE -->|Tier 2| T2[Researchers]\n    CE -->|Tier 3| T3[Family Members]\n    CE -->|Tier 4| T4[Forensic and Security]\n    CE -->|Tier 5| T5[IT Administrators]\n    CE -->|Denied| G((Access Blocked))\n\n    style P fill:#2166ac,color:#ffffff,stroke:#2166ac\n    style G fill:#d73027,color:#ffffff,stroke:#d73027\n    style CE fill:#f4a736,color:#000000,stroke:#e08010\n    style T1 fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style T2 fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style T3 fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style T4 fill:#e8f4f8,color:#000000,stroke:#4393c3\n    style T5 fill:#f7f7f7,color:#000000,stroke:#999999\n"},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-access-tiers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+<ol type="1">
+<li>Patient-centric design:</li>
+</ol>
+<p>The patient GUI presents GD access decisions in plain language. Consent is granular: e.g., a patient may authorize her/his treating oncologist to view tumor-relevant somatic variants while withholding pharmacogenomic data from the same clinician, or grant a researcher access to anonymized carrier status while blocking all clinical access. Notifications are issued for every access event.</p>
+<ol start="2" type="1">
+<li>Clinical provider GUI:</li>
+</ol>
+<p>Clinicians access a condition-relevant GD dashboard integrated within the EHR. Pharmacogenomic flags, hereditary risk alerts, and variant summaries are displayed contextually — presented at the moment of clinical relevance rather than requiring active retrieval.</p>
+<ol start="3" type="1">
+<li>Research and institutional access:</li>
+</ol>
+<p>Researchers receive access to anonymized datasets exportable in standard formats (VCF, FHIR Genomics, CSV). Institutional users in forensic or security domains access the system under a separate legal authorization pathway, with independent audit logging and mandatory judicial or ministerial oversight.</p>
+</section>
+<section id="comparison-with-existing-systems" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-with-existing-systems">Comparison with existing systems</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Standalone genomic DBs</th>
+<th>EHR genomic modules</th>
+<th>InDiGenous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Patient access and control</td>
+<td>None</td>
+<td>Limited</td>
+<td>Full</td>
+</tr>
+<tr class="even">
+<td>EHR integration</td>
+<td>None</td>
+<td>Partial</td>
+<td>Complete (FHIR)</td>
+</tr>
+<tr class="odd">
+<td>Cross-institutional portability</td>
+<td>None</td>
+<td>Rare</td>
+<td>By design</td>
+</tr>
+<tr class="even">
+<td>PH research access</td>
+<td>Reference only</td>
+<td>None</td>
+<td>Governed aggregate</td>
+</tr>
+<tr class="odd">
+<td>Extended use domains</td>
+<td>None</td>
+<td>None</td>
+<td>Forensic, security, reproductive</td>
+</tr>
+<tr class="even">
+<td>National ID linkage</td>
+<td>None</td>
+<td>None</td>
+<td>Core feature</td>
+</tr>
+<tr class="odd">
+<td>Consent architecture</td>
+<td>None</td>
+<td>Basic</td>
+<td>Granular, audited</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="v.-stakeholders-and-users" class="level2">
+<h2 class="anchored" data-anchor-id="v.-stakeholders-and-users">V. Stakeholders and users</h2>
+<p>The success of <em>InDiGenous</em> depends on engaging a clearly defined set of stakeholders, each with distinct roles, access levels, and interests. The table below summarizes the stakeholder ecosystem before each group is described in detail.</p>
+<div class="cell">
+<div id="tbl-stakeholders" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stakeholders-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: InDiGenous stakeholder groups: primary roles and benefits
+</figcaption>
+<div aria-describedby="tbl-stakeholders-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover do-not-create-environment cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Stakeholder group</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Primary role</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Primary benefit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">Patients</td>
+<td style="text-align: left;">GD owners and consent controllers</td>
+<td style="text-align: left;">Autonomy, personalized care, reproductive counseling</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">Healthcare providers</td>
+<td style="text-align: left;">Clinical GD consumers at point of care</td>
+<td style="text-align: left;">Precision treatment, pharmacogenomic safety, continuity of care</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">PH researchers</td>
+<td style="text-align: left;">Anonymized aggregate GD consumers</td>
+<td style="text-align: left;">Population genetic epidemiology, PH policy development</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">IT developers / system administrators</td>
+<td style="text-align: left;">System builders, maintainers, security enforcers</td>
+<td style="text-align: left;">Technically robust, compliant, trusted platform</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">State regulatory bodies</td>
+<td style="text-align: left;">Legal oversight, compliance monitoring</td>
+<td style="text-align: left;">Governed national GD infrastructure</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">Research institutions and universities</td>
+<td style="text-align: left;">Research access, academic training</td>
+<td style="text-align: left;">High-quality anonymized GD for studies and teaching</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">Forensic and security agencies</td>
+<td style="text-align: left;">Legally authorized extended-use access</td>
+<td style="text-align: left;">Forensic identification, personnel ID, mass casualty response</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="patients" class="level3">
+<h3 class="anchored" data-anchor-id="patients">1. Patients</h3>
+<p><strong><em>Patients</em></strong> will be the central stakeholders — they will own their GD and control all access to them. This is not merely a design preference but a legal and ethical requirement, for <strong><em>GD</em></strong> are personal property with multigenerational implications.</p>
+<ul>
+<li><p>GD control and privacy: Patients will grant, restrict, and revoke access at any time, with full visibility of who has accessed their GD and when.</p></li>
+<li><p>Personalized healthcare: GD integrated into the EHR will enable clinicians to deliver precision diagnostics and treatment without the patient needing to manage GD transfer between institutions.</p></li>
+<li><p>Reproductive and family counseling: For patients with hereditary conditions or carrier status, <em>InDiGenous</em> will provide a structured basis for informed reproductive decision-making within existing genetic counseling frameworks.</p></li>
+</ul>
+</section>
+<section id="healthcare-providers" class="level3">
+<h3 class="anchored" data-anchor-id="healthcare-providers">2. Healthcare providers</h3>
+<p>Clinicians will access patient GD within their existing EHR workflow — no separate login, no manual retrieval. The system will surface relevant genomic findings contextually: pharmacogenomic alerts at the point of prescribing, hereditary risk flags during preventive consultations, tumor variant summaries in oncology.</p>
+<ul>
+<li><p>Precision treatment: Drug selection and dosing informed by pharmacogenomic profile, reducing adverse reactions.</p></li>
+<li><p>Continuity of care: GD will be accessible across institutions, eliminating redundant testing when patients transfer.</p></li>
+<li><p>Clinical decision support: Variant interpretation linked to current guidelines (CPIC, ACMG).</p></li>
+</ul>
+</section>
+<section id="ph-researchers" class="level3">
+<h3 class="anchored" data-anchor-id="ph-researchers">3. PH researchers</h3>
+<p>PH researchers will access anonymized, aggregated GD under a governed data access framework. Individual-level data will be never exposed. Researchers will interact with de-identified datasets or server-side summary statistics.</p>
+<ul>
+<li><p>Genetic epidemiology: Population-level GD will enable identification of community-specific risk factors — of particular relevance in Israeli population subgroups.</p></li>
+<li><p>Policy development: Evidence base for targeted screening programs and preventive interventions.</p></li>
+<li><p>Ethical compliance: GA4GH-aligned data access agreements will ensure that research use remains within consented boundaries.</p></li>
+</ul>
+</section>
+<section id="it-developers-and-system-administrators" class="level3">
+<h3 class="anchored" data-anchor-id="it-developers-and-system-administrators">4. IT developers and system administrators</h3>
+<p>This group will build and maintain the platform — ensuring security, reliability, and regulatory compliance. They will have system-level access only; no GD content wiil be accessible to them.</p>
+<ul>
+<li><p>Security architecture: Encryption, access logging, penetration testing, incident response.</p></li>
+<li><p>System reliability: Uptime, performance, cross-platform consistency.</p></li>
+<li><p>Compliance: Ongoing alignment with GDPR, HIPAA, Israeli Privacy Protection Law, and evolving GD governance standards.</p></li>
+</ul>
+</section>
+<section id="state-regulatory-bodies" class="level3">
+<h3 class="anchored" data-anchor-id="state-regulatory-bodies">5. State regulatory bodies</h3>
+<p>The Ministry of Health, the Privacy Protection Authority, and relevant oversight bodies will define the legal framework within which <em>InDiGenous</em> operates — approving data access policies, auditing compliance, and updating governance as the regulatory landscape evolves.</p>
+<ul>
+<li><p>Data protection: Ensuring national and international privacy standards are met.</p></li>
+<li><p>PH planning: Leveraging aggregated GD insights for national health strategy.</p></li>
+<li><p>Quality control: Independent audit of data management practices.</p></li>
+</ul>
+</section>
+<section id="research-institutions-and-universities" class="level3">
+<h3 class="anchored" data-anchor-id="research-institutions-and-universities">6. Research institutions and universities</h3>
+<p>Academic institutions will access anonymized GD for studies in genomics, genetic epidemiology, personalized medicine, etc. <em>InDiGenous</em> will also serve as a teaching resource — exposing students to real-world GD infrastructure within an ethical, governed framework.</p>
+</section>
+<section id="forensic-and-security-agencies" class="level3">
+<h3 class="anchored" data-anchor-id="forensic-and-security-agencies">7. Forensic and security agencies</h3>
+<p>This stakeholder group is absent from conventional genomic ID proposals but is directly relevant in the Israeli context. The National Forensic Institute (Abu Kabir), Israeli Police, IDF Medical Corps, and relevant security services will be able to access <em>InDiGenous</em> under a separate legal authorization pathway — distinct from the clinical and research tiers — with mandatory judicial or ministerial oversight and independent audit logging.</p>
+<ul>
+<li><p>Forensic identification: Identification in mass casualty events and criminal investigations.</p></li>
+<li><p>Personnel ID: Identity verification for military and security personnel in field conditions.</p></li>
+</ul>
+<p>Access in this tier will never be self-authorized by the patient consent engine alone — it will require external legal authorization, logged separately, and subject to independent oversight.</p>
+</section>
+</section>
+<section id="vi.-success-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="vi.-success-metrics">VI. Success metrics</h2>
+<p>The effectiveness of <em>InDiGenous</em> will be evaluated across six domains. For each, the metric, its rationale, and its measurement method are defined (<a href="#tbl-metrics" class="quarto-xref">Table&nbsp;2</a>).</p>
+<div class="cell">
+<div id="tbl-metrics" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: InDiGenous success metrics by domain
+</figcaption>
+<div aria-describedby="tbl-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover do-not-create-environment cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Domain</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Metric</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">User adoption and engagement</td>
+<td style="text-align: left; width: 22em;">Number of active patients, providers, and researchers registered</td>
+<td style="text-align: left; width: 18em;">Steady growth; high retention rates across all user tiers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">Data security and privacy compliance</td>
+<td style="text-align: left; width: 22em;">Number of data breaches, unauthorized access attempts; regulatory compliance rate</td>
+<td style="text-align: left; width: 18em;">Zero breaches; full compliance with GDPR, HIPAA, and Israeli Privacy Protection Law</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">Research impact and utilization</td>
+<td style="text-align: left; width: 22em;">Number of studies and publications using InDiGenous data; dataset access requests</td>
+<td style="text-align: left; width: 18em;">Increasing citation and dataset access over time</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">Patient outcomes and clinical improvements</td>
+<td style="text-align: left; width: 22em;">Reduction in adverse drug reactions; improvement in treatment efficacy indicators</td>
+<td style="text-align: left; width: 18em;">Measurable reduction in preventable adverse events linked to pharmacogenomics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 12em; font-weight: bold;">Reproductive and family planning use</td>
+<td style="text-align: left; width: 22em;">Usage rate of GD for reproductive counseling; satisfaction with genetic counseling</td>
+<td style="text-align: left; width: 18em;">High satisfaction scores; increasing uptake in genetic counseling workflows</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 12em; font-weight: bold;">PH contributions</td>
+<td style="text-align: left; width: 22em;">Number of PH studies using aggregated GD; policies informed by InDiGenous data</td>
+<td style="text-align: left; width: 18em;">Demonstrable policy impact at Ministry of Health level</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<hr>
+<section id="vii.-sources-and-appendices" class="level3">
+<h3 class="anchored" data-anchor-id="vii.-sources-and-appendices">VII. Sources and appendices</h3>
+<section id="sources" class="level4">
+<h4 class="anchored" data-anchor-id="sources">Sources</h4>
+<p>This section provides the academic, regulatory, and online sources which inspired us to substantiate and develop this <strong>InDiGenous</strong> proposal.</p>
+<p><strong><em>1. Academic bibliography:</em></strong></p>
+<p>Bui, A.A.T., &amp; Taira, R.K. (2017). Biomedical Informatics: State of the Art, Challenges, and Opportunities. MDPI, 3(1), 15-27. Retrieved from https://www.mdpi.com/journal/biomedinformatics Altman, R.B., &amp; Klein, T.E. (2020). Bioinformatics and Medical Informatics: Collaborations on the Road to Precision Medicine. Oxford University Press. Retrieved from https://academic.oup.com/jamia Friedman, C., &amp; Wong, A.K. (2019). Genomic Data in Clinical Practice: Integrative Approaches and Challenges. Journal of the American Medical Informatics Association, 26(4), 443-455. Retrieved from https://www.jamia.org</p>
+<p><strong><em>2. Regulatory and data protection guidelines:</em></strong></p>
+<p>General Data Protection Regulation (GDPR). (2016). European Union. Retrieved from https://gdpr.eu HIPAA Privacy Rule. (2013). U.S. Department of Health &amp; Human Services. Retrieved from https://www.hhs.gov/hipaa/for-professionals/privacy/index.html Society for Health Informatics (2022). Best Practices for Genetic Data Management and Security. Retrieved from https://www.healthinformatics.org/best-practices</p>
+<p><strong><em>3. Online resources:</em></strong></p>
+<p>Public Health Informatics. (2023). Centers for Disease Control and Prevention (CDC). Retrieved from https://www.cdc.gov/phinformatics Electronic Health Records Integration. (2022). American Medical Informatics Association. Retrieved from https://www.amia.org/ehr-integration Genomic Data in Personalized Medicine. (2021). National Institutes of Health (NIH). Retrieved from https://www.nih.gov/research/genomics/personalized-medicine</p>
+</section>
+<section id="appendices" class="level4">
+<h4 class="anchored" data-anchor-id="appendices">Appendices</h4>
+<p>This section provides additional context and resources to illustrate specific system elements.</p>
+<p><strong><em>Appendix A: Data flow diagram:</em></strong> Illustrates how GD moves within the <strong>InDiGenous</strong>, from patient input to authorized access by healthcare providers and researchers.</p>
+<p><strong><em>Appendix B: Patient access control guide:</em></strong> Provides a step-by-step guide for patients to manage access permissions, including assigning GD access to healthcare providers, family members, or researchers.</p>
+<p><strong><em>Appendix C: A user interface mockup of a patient’s portal interface:</em></strong> A conceptual design of a patient’s dashboard, showcasing GD access options, consent management, and key notifications.</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
